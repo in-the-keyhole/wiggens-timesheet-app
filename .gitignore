@@ -1,0 +1,15 @@
+# Backend
+api/target/
+
+# Frontend
+ui/node_modules/
+ui/dist/
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
