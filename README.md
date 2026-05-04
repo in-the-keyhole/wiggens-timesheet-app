@@ -45,6 +45,13 @@ Set `VITE_API_BASE_URL` to override API base (defaults to `http://localhost:8080
 - Reports: `/reports`
 - Employees: `/employees` (browse, add, edit, delete, search)
 
+#### Employees Screen
+- Open `/employees`
+- Add: enter first/last name and click Add
+- Edit: click the pencil icon, modify names, click Update
+- Delete: click the trash icon
+- Search: type in the Search box to filter by name
+
 ## Notes
 - Layered architecture followed: Controller → Service → Repository.
 - DTOs used for all requests/responses; entities not exposed.
