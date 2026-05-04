@@ -20,8 +20,8 @@ function App() {
       api.get('/employees').then(r => r.data),
     ])
     setMetrics(m)
-    setEmployees(e)
-    if (e.length) setEmployeeId(String(e[0].id))
+    setEmployees(Array.isArray(e) ? e : [])
+    if (Array.isArray(e) && e.length) setEmployeeId(String(e[0].id))
     if (!weekStart) {
       const d = new Date()
       const day = d.getDay()
