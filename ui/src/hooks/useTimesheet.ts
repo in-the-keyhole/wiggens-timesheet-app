@@ -9,6 +9,11 @@ export function useTimesheet(employeeId: number, weekStart: string) {
   const [loading, setLoading] = useState(false)
 
   const load = useCallback(() => {
+    // Avoid calling the API until a valid employee is selected
+    if (!employeeId || employeeId <= 0) {
+      setTimesheet({ employeeId, weekStart, entries: [] })
+      return
+    }
     setLoading(true)
     api.get<Timesheet>(`/timesheets/employee/${employeeId}`, { params: { weekStart }})
       .then(r => setTimesheet(r.data))
@@ -26,4 +31,3 @@ export function useTimesheet(employeeId: number, weekStart: string) {
 
   return { timesheet, setTimesheet, loading, save, reload: load }
 }
-
