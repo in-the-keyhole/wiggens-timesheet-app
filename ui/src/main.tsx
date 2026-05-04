@@ -5,6 +5,7 @@ import App from './App'
 import Landing from './screens/Landing'
 import TimesheetEditor from './screens/TimesheetEditor'
 import Reports from './screens/Reports'
+import Employees from './screens/Employees'
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Landing /> },
       { path: 'timesheet', element: <TimesheetEditor /> },
-      { path: 'reports', element: <Reports /> }
+      { path: 'reports', element: <Reports /> },
+      { path: 'employees', element: <Employees /> }
     ]
   }
 ])
@@ -23,4 +25,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RouterProvider router={router} />
   </React.StrictMode>
 )
-

@@ -9,6 +9,7 @@ export default function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>Wiggens Timesheet</Typography>
           <Button color="inherit" component={Link} to="/">Home</Button>
           <Button color="inherit" component={Link} to="/timesheet">Timesheet</Button>
+          <Button color="inherit" component={Link} to="/employees">Employees</Button>
           <Button color="inherit" component={Link} to="/reports">Reports</Button>
         </Toolbar>
       </AppBar>
@@ -18,4 +19,3 @@ export default function App() {
     </Box>
   )
 }
-

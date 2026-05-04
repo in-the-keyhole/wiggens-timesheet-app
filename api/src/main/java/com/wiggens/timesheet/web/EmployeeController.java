@@ -23,8 +23,27 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto> list() {
-        return employeeService.list();
+    public List<EmployeeDto> list(@RequestParam(name = "q", required = false) String q) {
+        return employeeService.search(q);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeDto> get(@PathVariable Long id) {
+        return employeeService.get(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDto> update(@PathVariable Long id, @Valid @RequestBody EmployeeDto dto) {
+        return employeeService.update(id, dto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        employeeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
-

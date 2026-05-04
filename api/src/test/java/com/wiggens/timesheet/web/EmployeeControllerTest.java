@@ -34,4 +34,37 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*].firstName", org.hamcrest.Matchers.hasItem("Ada")));
     }
+
+    @Test
+    void searchUpdateAndDeleteEmployee() throws Exception {
+        // create
+        EmployeeDto dto = EmployeeDto.builder().firstName("Grace").lastName("Hopper").build();
+        String createdBody = mockMvc.perform(post("/codex-example/api/v1/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        EmployeeDto created = mapper.readValue(createdBody, EmployeeDto.class);
+
+        // search
+        mockMvc.perform(get("/codex-example/api/v1/employees").param("q", "hop"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[*].lastName", org.hamcrest.Matchers.hasItem("Hopper")));
+
+        // update
+        EmployeeDto updated = EmployeeDto.builder().firstName("Grace").lastName("Murray Hopper").build();
+        mockMvc.perform(put("/codex-example/api/v1/employees/" + created.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updated)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lastName").value("Murray Hopper"));
+
+        // delete
+        mockMvc.perform(delete("/codex-example/api/v1/employees/" + created.getId()))
+                .andExpect(status().isNoContent());
+
+        // verify no longer present
+        mockMvc.perform(get("/codex-example/api/v1/employees/" + created.getId()))
+                .andExpect(status().isNotFound());
+    }
 }

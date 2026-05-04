@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,5 +29,33 @@ public class EmployeeService {
                 .map(e -> EmployeeDto.builder().id(e.getId()).firstName(e.getFirstName()).lastName(e.getLastName()).build())
                 .collect(Collectors.toList());
     }
-}
 
+    public Optional<EmployeeDto> get(Long id) {
+        return employeeRepository.findById(id)
+                .map(e -> EmployeeDto.builder().id(e.getId()).firstName(e.getFirstName()).lastName(e.getLastName()).build());
+    }
+
+    public Optional<EmployeeDto> update(Long id, EmployeeDto dto) {
+        return employeeRepository.findById(id).map(e -> {
+            e.setFirstName(dto.getFirstName());
+            e.setLastName(dto.getLastName());
+            Employee saved = employeeRepository.save(e);
+            return EmployeeDto.builder().id(saved.getId()).firstName(saved.getFirstName()).lastName(saved.getLastName()).build();
+        });
+    }
+
+    public void delete(Long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    public List<EmployeeDto> search(String q) {
+        if (q == null || q.isBlank()) {
+            return list();
+        }
+        return employeeRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(q, q)
+                .stream()
+                .map(e -> EmployeeDto.builder().id(e.getId()).firstName(e.getFirstName()).lastName(e.getLastName()).build())
+                .collect(Collectors.toList());
+    }
+}
