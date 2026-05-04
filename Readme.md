@@ -20,6 +20,7 @@ Frontend:
 - `GET /codex-example/api/v1/metrics` — employee and timesheet counts
 - `GET /codex-example/api/v1/employees` — list employees (seeded Jane/John Doe)
 - `POST /codex-example/api/v1/timesheets` — submit weekly timesheet
+- `GET /codex-example/api/v1/reports/weekly?weekStart=YYYY-MM-DD` — weekly hours per employee
 
 Example `POST /timesheets` body:
 ```
@@ -42,4 +43,3 @@ Example `POST /timesheets` body:
 - H2 console at `/h2-console` when running locally.
 - Entities are not exposed directly; DTOs are used.
 - Validation via Jakarta Bean Validation on request DTOs.
-
