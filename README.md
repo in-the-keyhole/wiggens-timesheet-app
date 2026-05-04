@@ -58,5 +58,9 @@ Set `VITE_API_BASE_URL` to override API base (defaults to `http://localhost:8080
 - Validation with Jakarta Bean Validation.
 - UI uses functional components, hooks, and MUI.
 
+## Changelog
+- Employee Management UI implemented and tested.
+- Dashboard: prevent invalid timesheet fetch on initial load; seed default employee.
+
 ## GitHub Issues Loop
 The implementation follows `PROMPT.md`: work one `wiggens:` issue per iteration, commit with conventional messages, and run tests before closing. A PAT is required to close issues via the GitHub API.
