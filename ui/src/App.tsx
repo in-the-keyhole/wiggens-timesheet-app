@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Box, Container, Typography, Paper, Grid, TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material'
+import { Box, Container, Typography, Paper, Grid, TextField, Button, MenuItem, Select, InputLabel, FormControl, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { api } from './codex-example/api/client'
 
 type Metrics = { employeeCount: number, timesheetCount: number }
 type Employee = { id: number, firstName: string, lastName: string }
+type WeeklySummary = { employeeId: number, employeeName: string, weekStart: string, totalHours: number }
 
 function App() {
   const [metrics, setMetrics] = useState<Metrics>({ employeeCount: 0, timesheetCount: 0 })
@@ -11,6 +12,7 @@ function App() {
   const [employeeId, setEmployeeId] = useState('')
   const [weekStart, setWeekStart] = useState('')
   const [hours, setHours] = useState({ mon: 8, tue: 8, wed: 8, thu: 8, fri: 8, sat: 0, sun: 0 })
+  const [weekly, setWeekly] = useState<WeeklySummary[]>([])
 
   async function load() {
     const [m, e] = await Promise.all([
@@ -27,6 +29,8 @@ function App() {
       const monday = new Date(d.setDate(diff))
       setWeekStart(monday.toISOString().slice(0,10))
     }
+    // preload report if weekStart is ready next tick
+    setTimeout(loadWeekly, 0)
   }
 
   useEffect(() => { load() }, [])
@@ -35,6 +39,13 @@ function App() {
     await api.post('/timesheets', { employeeId: Number(employeeId), weekStart, ...hours })
     const m = await api.get('/metrics').then(r => r.data)
     setMetrics(m)
+    await loadWeekly()
+  }
+
+  const loadWeekly = async () => {
+    if (!weekStart) return
+    const data = await api.get('/reports/weekly', { params: { weekStart } }).then(r => r.data as WeeklySummary[])
+    setWeekly(data)
   }
 
   return (
@@ -77,10 +88,39 @@ function App() {
             </Grid>
           </Grid>
         </Paper>
+
+        <Paper sx={{ p:2, my:2 }}>
+          <Typography variant="h6" sx={{ mb: 1 }}>Reports: Weekly Summary</Typography>
+          <Grid container spacing={2} alignItems="center" sx={{ mb: 1 }}>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Week Start (Mon)" type="date" value={weekStart} onChange={e => { setWeekStart(e.target.value); }} InputLabelProps={{ shrink: true }} />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <Button variant="outlined" onClick={loadWeekly}>Load</Button>
+            </Grid>
+          </Grid>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Employee</TableCell>
+                <TableCell>Week Start</TableCell>
+                <TableCell align="right">Total Hours</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {weekly.map((row) => (
+                <TableRow key={row.employeeId}>
+                  <TableCell>{row.employeeName}</TableCell>
+                  <TableCell>{row.weekStart}</TableCell>
+                  <TableCell align="right">{row.totalHours}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       </Box>
     </Container>
   )
 }
 
 export default App
-

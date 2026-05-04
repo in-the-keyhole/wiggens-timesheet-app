@@ -56,6 +56,11 @@ class MetricsAndTimesheetIntegrationTest {
         mockMvc.perform(get("/codex-example/api/v1/metrics"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.timesheetCount", is(1)));
+
+        // Reports should include one weekly summary for that Monday
+        mockMvc.perform(get("/codex-example/api/v1/reports/weekly").param("weekStart", req.getWeekStart().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].totalHours", is(40.0)));
     }
 }
-
