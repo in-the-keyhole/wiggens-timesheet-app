@@ -24,7 +24,10 @@ H2 console available at `http://localhost:8080/h2-console` (dev profile).
 ### REST Endpoints
 All endpoints are under base path `codex-example/api/v1/`.
 - `POST /codex-example/api/v1/employees` — create employee
-- `GET  /codex-example/api/v1/employees` — list employees
+- `GET  /codex-example/api/v1/employees` — list employees (optional `?q=` search by first/last name)
+- `GET  /codex-example/api/v1/employees/{id}` — get one employee
+- `PUT  /codex-example/api/v1/employees/{id}` — update employee
+- `DELETE /codex-example/api/v1/employees/{id}` — delete employee
 - `POST /codex-example/api/v1/timesheets` — create/update weekly timesheet
 - `GET  /codex-example/api/v1/timesheets/employee/{employeeId}?weekStart=YYYY-MM-DD` — fetch weekly timesheet
 
@@ -35,6 +38,12 @@ All endpoints are under base path `codex-example/api/v1/`.
 - Build: `cd ui && npm run build`
 
 Set `VITE_API_BASE_URL` to override API base (defaults to `http://localhost:8080/codex-example/api/v1`).
+
+### Screens
+- Home: `/`
+- Timesheet: `/timesheet`
+- Reports: `/reports`
+- Employees: `/employees` (browse, add, edit, delete, search)
 
 ## Notes
 - Layered architecture followed: Controller → Service → Repository.
