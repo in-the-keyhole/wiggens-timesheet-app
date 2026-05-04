@@ -40,7 +40,7 @@ All endpoints are under base path `codex-example/api/v1/`.
 Set `VITE_API_BASE_URL` to override API base (defaults to `http://localhost:8080/codex-example/api/v1`).
 
 ### Screens
-- Home: `/`
+- Dashboard (Home): `/` — shows total Employees and Timesheets
 - Timesheet: `/timesheet`
 - Reports: `/reports`
 - Employees: `/employees` (browse, add, edit, delete, search)
