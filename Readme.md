@@ -15,6 +15,7 @@ Frontend:
 - `cd ui`
 - `npm install`
 - `npm run dev` (starts on port 5173)
+  - Dev server proxies `/codex-example/api/v1` to `http://localhost:8080`.
 
 ## Endpoints
 - `GET /codex-example/api/v1/metrics` — employee and timesheet counts
