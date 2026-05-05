@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../codex-example/api/client'
-import { Button, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material'
+import { Button, Grid, MenuItem, Stack, TextField, Typography, Snackbar, Alert } from '@mui/material'
 
 type Employee = { id: number; firstName: string; lastName: string }
 type Timesheet = { employeeId: number; weekStart: string; monday: number; tuesday: number; wednesday: number; thursday: number; friday: number; saturday: number; sunday: number }
@@ -24,11 +24,17 @@ export default function Timesheets() {
 
   const total = useMemo(() => Object.values(hours).reduce((a, b) => a + (Number(b)||0), 0), [hours])
 
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success'|'error'}>({ open: false, message: '', severity: 'success' })
+
   const save = async () => {
     if (!employeeId) return
     const payload: Timesheet = { employeeId: Number(employeeId), weekStart, ...hours }
-    await api.post('/timesheets', payload)
-    alert('Saved')
+    try {
+      await api.post('/timesheets', payload)
+      setSnack({ open: true, message: 'Timesheet saved', severity: 'success' })
+    } catch (e) {
+      setSnack({ open: true, message: 'Failed to save timesheet', severity: 'error' })
+    }
   }
 
   const onHour = (k: keyof typeof hours, v: string) => setHours({ ...hours, [k]: Number(v) })
@@ -51,7 +57,9 @@ export default function Timesheets() {
       </Grid>
       <Typography variant="subtitle1">Total: {total}</Typography>
       <Button variant="contained" onClick={save} disabled={!employeeId}>Save</Button>
+      <Snackbar open={snack.open} autoHideDuration={3000} onClose={() => setSnack({ ...snack, open: false })} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert severity={snack.severity} variant="filled" onClose={() => setSnack({ ...snack, open: false })}>{snack.message}</Alert>
+      </Snackbar>
     </Stack>
   )
 }
-

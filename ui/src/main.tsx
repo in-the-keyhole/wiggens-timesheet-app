@@ -1,41 +1,74 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { CssBaseline, AppBar, Toolbar, Typography, Container, Button, Stack } from '@mui/material'
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { CssBaseline, AppBar, Toolbar, Typography, Container, Drawer, List, ListItemButton, ListItemText, Box, Divider } from '@mui/material'
 import Home from './pages/Home'
 import Employees from './pages/Employees'
 import Timesheets from './pages/Timesheets'
 import Reports from './pages/Reports'
 
-function Nav() {
+const drawerWidth = 220
+
+function Sidebar() {
+  const location = useLocation()
+  const items = [
+    { label: 'Home', to: '/' },
+    { label: 'Employees', to: '/employees' },
+    { label: 'Timesheets', to: '/timesheets' },
+    { label: 'Reports', to: '/reports' }
+  ]
   return (
-    <AppBar position="static">
+    <Drawer variant="permanent" sx={{
+      width: drawerWidth,
+      flexShrink: 0,
+      [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' }
+    }}>
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>Wiggens Timesheet</Typography>
-        <Stack direction="row" spacing={1}>
-          <Button color="inherit" component={Link} to="/">Home</Button>
-          <Button color="inherit" component={Link} to="/employees">Employees</Button>
-          <Button color="inherit" component={Link} to="/timesheets">Timesheets</Button>
-          <Button color="inherit" component={Link} to="/reports">Reports</Button>
-        </Stack>
+        <Typography variant="h6">Wiggens</Typography>
       </Toolbar>
-    </AppBar>
+      <Divider />
+      <List>
+        {items.map((item) => (
+          <ListItemButton key={item.to} component={Link} to={item.to} selected={location.pathname === item.to}>
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        ))}
+      </List>
+    </Drawer>
+  )
+}
+
+function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">Wiggens Timesheet</Typography>
+        </Toolbar>
+      </AppBar>
+      <Sidebar />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <Container maxWidth="lg">
+          {children}
+        </Container>
+      </Box>
+    </Box>
   )
 }
 
 function App() {
   return (
     <BrowserRouter>
-      <CssBaseline />
-      <Nav />
-      <Container sx={{ mt: 2 }}>
+      <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/timesheets" element={<Timesheets />} />
           <Route path="/reports" element={<Reports />} />
         </Routes>
-      </Container>
+      </Layout>
     </BrowserRouter>
   )
 }
@@ -45,4 +78,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>
 )
-
