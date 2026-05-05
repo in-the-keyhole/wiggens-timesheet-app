@@ -32,6 +32,11 @@ Seed data: Jane Doe and John Doe are inserted at startup.
 
 The dev server proxies API calls under `/codex-example/api/v1` to `http://localhost:8080`.
 
+UI notes:
+- Persistent left sidebar navigation (MUI Drawer)
+- Inline add/edit employee form (no popup dialogs)
+- Snackbar feedback for saving timesheets
+
 ## Development Notes
 - Backend follows layered architecture (Controller -> Service -> Repository)
 - DTOs are used for requests/responses; JPA entities are not exposed
@@ -42,4 +47,3 @@ The dev server proxies API calls under `/codex-example/api/v1` to `http://localh
 ## Git
 - Commit: `git commit -m "feat: ..."`
 - Push: `git push`
-
