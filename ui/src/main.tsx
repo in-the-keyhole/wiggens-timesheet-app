@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
-import { CssBaseline, AppBar, Toolbar, Typography, Container, Drawer, List, ListItemButton, ListItemText, Box, Divider } from '@mui/material'
+import { CssBaseline, AppBar, Toolbar, Typography, Container, Drawer, List, ListItemButton, ListItemText, Box, Divider, Fade } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './theme'
 import Home from './pages/Home'
 import Employees from './pages/Employees'
 import Timesheets from './pages/Timesheets'
@@ -39,6 +41,7 @@ function Sidebar() {
 }
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation()
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -48,10 +51,12 @@ function Layout({ children }: { children: React.ReactNode }) {
         </Toolbar>
       </AppBar>
       <Sidebar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, background: (t) => t.palette.background.default, minHeight: '100vh' }}>
         <Toolbar />
         <Container maxWidth="lg">
-          {children}
+          <Fade in key={location.pathname} timeout={400}>
+            <Box>{children}</Box>
+          </Fade>
         </Container>
       </Box>
     </Box>
@@ -60,16 +65,18 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/timesheets" element={<Timesheets />} />
-          <Route path="/reports" element={<Reports />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/timesheets" element={<Timesheets />} />
+            <Route path="/reports" element={<Reports />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
