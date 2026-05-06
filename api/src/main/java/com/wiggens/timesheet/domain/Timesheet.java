@@ -23,8 +23,11 @@ public class Timesheet {
 
     private LocalDate weekStart; // Monday of the week
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private TimesheetStatus status = TimesheetStatus.OPEN;
+
     @OneToMany(mappedBy = "timesheet", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<TimesheetEntry> entries = new ArrayList<>();
 }
-

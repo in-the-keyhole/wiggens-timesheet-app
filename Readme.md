@@ -35,7 +35,7 @@ cd api && mvn clean package
 - `GET /codex-example/api/v1/metrics` — employee and timesheet counts
 - `GET /codex-example/api/v1/employees` — list employees
 - `POST /codex-example/api/v1/employees` — create employee
-- `POST /codex-example/api/v1/timesheets` — submit timesheet
+- `POST /codex-example/api/v1/timesheets` — submit timesheet (body includes `employeeId`, `weekStart`, `entries[]`, and `status`=`OPEN|CLOSED`)
 - `GET /codex-example/api/v1/reports/weekly-hours?weekStart=YYYY-MM-DD` — hours by employee
 - `GET /codex-example/api/v1/status/inactive?weekStart=YYYY-MM-DD` — employees with no hours for the week
 

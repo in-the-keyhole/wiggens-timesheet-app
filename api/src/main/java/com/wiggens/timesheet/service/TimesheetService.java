@@ -3,6 +3,7 @@ package com.wiggens.timesheet.service;
 import com.wiggens.timesheet.domain.Employee;
 import com.wiggens.timesheet.domain.Timesheet;
 import com.wiggens.timesheet.domain.TimesheetEntry;
+import com.wiggens.timesheet.domain.TimesheetStatus;
 import com.wiggens.timesheet.dto.TimesheetDTO;
 import com.wiggens.timesheet.dto.TimesheetEntryDTO;
 import com.wiggens.timesheet.repository.EmployeeRepository;
@@ -24,6 +25,12 @@ public class TimesheetService {
         Employee employee = employeeRepository.findById(dto.getEmployeeId()).orElseThrow();
         Timesheet timesheet = timesheetRepository.findByEmployeeAndWeekStart(employee, dto.getWeekStart())
                 .orElse(Timesheet.builder().employee(employee).weekStart(dto.getWeekStart()).build());
+        // Set status: use provided, otherwise keep existing or default to OPEN
+        if (dto.getStatus() != null) {
+            timesheet.setStatus(dto.getStatus());
+        } else if (timesheet.getStatus() == null) {
+            timesheet.setStatus(TimesheetStatus.OPEN);
+        }
         timesheet.getEntries().clear();
         for (TimesheetEntryDTO e : dto.getEntries()) {
             TimesheetEntry entry = TimesheetEntry.builder()
@@ -50,6 +57,7 @@ public class TimesheetService {
                 .id(t.getId())
                 .employeeId(t.getEmployee().getId())
                 .weekStart(t.getWeekStart())
+                .status(t.getStatus())
                 .entries(t.getEntries().stream().map(e -> TimesheetEntryDTO.builder()
                         .dayOfWeek(e.getDayOfWeek())
                         .hours(e.getHours())
@@ -57,4 +65,3 @@ public class TimesheetService {
                 .build();
     }
 }
-

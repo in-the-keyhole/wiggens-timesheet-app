@@ -13,7 +13,7 @@ repositoryUrl = https://github.com/in-the-keyhole/wiggens-timesheet-app
 1. Read the Github origin/main for all open issues with the issue title having the "wiggens:" prefix in the title name. Ignore issues that do not have this prefix in the title. 
 2. Loop over each issue identified for wiggens and perform the description of the issue.
 3. Implement all open issues completely, following the conventions in Agents.md. Commit work after each issue loop iteration.
-4. After implementing an issue in the loop, Close and comment the Github Issue .
+4. After implementing an issue in the loop, Close and comment the Github Issue using the GITHUB personnel Access Token (PAT) defined in the GITHUB_TOKEN environment variable
 5. **Run the relevant tests** to verify your work:
    - Backend: `cd api && ./mvnw test`
    - Frontend: `cd ui && npm test`
@@ -27,7 +27,7 @@ repositoryUrl = https://github.com/in-the-keyhole/wiggens-timesheet-app
 - Commit after completing each issue in the loop. 
 - Use conventional commit messages: `feat:`, `fix:`, `chore:`, `test:`
 - Keep commits atomic — one story per commit
-- Mark the Github issue closed using the Github Personel Access Token (PAT)
+- Mark the Github issue closed using the Github Personel Access Token (PAT) the Personel Access Token (PAT) is defined in the GITHUB_TOKEN environment variable
 - Push commits to origin/master use the configured MCP github server to push. The Github Personel Access Token (PAT) defined in the GITHUB_TOKEN environment variable
 
 

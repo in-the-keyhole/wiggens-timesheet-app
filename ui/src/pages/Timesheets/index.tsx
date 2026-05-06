@@ -4,6 +4,7 @@ import client from '../../codex-example/api/client'
 
 type Employee = { id: number, firstName: string, lastName: string }
 type Entry = { dayOfWeek: string, hours: number }
+type TimesheetStatus = 'OPEN' | 'CLOSED'
 
 const DAYS = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY']
 
@@ -12,14 +13,16 @@ export default function Timesheets() {
   const [employeeId, setEmployeeId] = useState<number | ''>('' as any)
   const [weekStart, setWeekStart] = useState('')
   const [entries, setEntries] = useState<Entry[]>(DAYS.map(d => ({ dayOfWeek: d, hours: 0 })))
+  const [status, setStatus] = useState<TimesheetStatus>('OPEN')
 
   useEffect(() => { client.get('/employees').then(r => setEmployees(r.data)) }, [])
 
   const canSubmit = useMemo(() => employeeId && weekStart, [employeeId, weekStart])
 
   const submit = async () => {
-    await client.post('/timesheets', { employeeId, weekStart, entries })
+    await client.post('/timesheets', { employeeId, weekStart, status, entries })
     setEntries(DAYS.map(d => ({ dayOfWeek: d, hours: 0 })))
+    setStatus('OPEN')
   }
 
   return (
@@ -30,6 +33,10 @@ export default function Timesheets() {
           {employees.map(e => <MenuItem key={e.id} value={e.id}>{e.firstName} {e.lastName}</MenuItem>)}
         </TextField>
         <TextField type="date" label="Week Start" InputLabelProps={{ shrink: true }} value={weekStart} onChange={e => setWeekStart(e.target.value)} />
+        <TextField select label="Status" value={status} onChange={e => setStatus(e.target.value as TimesheetStatus)} sx={{ minWidth: 160 }}>
+          <MenuItem value={'OPEN'}>OPEN</MenuItem>
+          <MenuItem value={'CLOSED'}>CLOSED</MenuItem>
+        </TextField>
       </Stack>
       {entries.map((en, idx) => (
         <Stack direction="row" gap={2} key={en.dayOfWeek} alignItems="center">
@@ -42,4 +49,3 @@ export default function Timesheets() {
     </Stack>
   )
 }
-
