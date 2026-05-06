@@ -35,7 +35,9 @@ cd api && mvn clean package
 - `GET /codex-example/api/v1/metrics` — employee and timesheet counts
 - `GET /codex-example/api/v1/employees` — list employees
 - `POST /codex-example/api/v1/employees` — create employee
-- `POST /codex-example/api/v1/timesheets` — submit timesheet (body includes `employeeId`, `weekStart`, `entries[]`, and `status`=`OPEN|CLOSED`)
+- `POST /codex-example/api/v1/timesheets` — submit timesheet
+  - Body: `employeeId`, `weekStart` (YYYY-MM-DD), `status`=`OPEN|CLOSED`, `entries[]`
+  - Each entry: `dayOfWeek`=`MONDAY..FRIDAY`, `hours` (0-24), optional `notes` (up to 1000 chars)
 - `GET /codex-example/api/v1/reports/weekly-hours?weekStart=YYYY-MM-DD` — hours by employee
 - `GET /codex-example/api/v1/status/inactive?weekStart=YYYY-MM-DD` — employees with no hours for the week
 
@@ -72,3 +74,6 @@ cd ui && npm run build
 - REST base path: `/codex-example/api/v1/`
 - DTOs for request/response, validation via Jakarta Bean Validation
 - Minimal integration tests provided; extend as features grow
+
+## Recent Changes
+- Added daily notes to timesheet entries (backend + UI). Notes are persisted and returned by the API and can be entered for each weekday in the Timesheets page.
