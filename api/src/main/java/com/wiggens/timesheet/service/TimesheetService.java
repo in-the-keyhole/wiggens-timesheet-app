@@ -37,6 +37,7 @@ public class TimesheetService {
                     .timesheet(timesheet)
                     .dayOfWeek(e.getDayOfWeek())
                     .hours(e.getHours())
+                    .notes(e.getNotes())
                     .build();
             timesheet.getEntries().add(entry);
         }
@@ -61,6 +62,7 @@ public class TimesheetService {
                 .entries(t.getEntries().stream().map(e -> TimesheetEntryDTO.builder()
                         .dayOfWeek(e.getDayOfWeek())
                         .hours(e.getHours())
+                        .notes(e.getNotes())
                         .build()).collect(Collectors.toList()))
                 .build();
     }

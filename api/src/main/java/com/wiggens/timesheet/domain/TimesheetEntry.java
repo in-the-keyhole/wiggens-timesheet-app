@@ -23,5 +23,7 @@ public class TimesheetEntry {
     private DayOfWeek dayOfWeek;
 
     private double hours;
-}
 
+    @Column(length = 1000)
+    private String notes;
+}
