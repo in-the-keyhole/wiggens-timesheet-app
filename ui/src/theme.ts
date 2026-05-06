@@ -14,7 +14,7 @@ const theme = createTheme({
       dark: '#00766c'
     },
     background: {
-      default: '#fafafa',
+      default: '#f7f8fb',
       paper: '#ffffff'
     }
   },
@@ -45,9 +45,27 @@ const theme = createTheme({
           borderRadius: 8
         }
       }
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          margin: '4px 8px',
+          '&.Mui-selected': {
+            background: 'rgba(63,81,181,0.12)'
+          }
+        }
+      }
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          transition: 'background-color 150ms ease',
+          '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' }
+        }
+      }
     }
   }
 })
 
 export default theme
-

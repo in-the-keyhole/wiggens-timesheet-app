@@ -51,7 +51,12 @@ function Layout({ children }: { children: React.ReactNode }) {
         </Toolbar>
       </AppBar>
       <Sidebar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, background: (t) => t.palette.background.default, minHeight: '100vh' }}>
+      <Box component="main" sx={{
+        flexGrow: 1,
+        p: 3,
+        background: (t) => `radial-gradient(1200px 600px at -10% -10%, rgba(63,81,181,0.06), transparent 50%), radial-gradient(1000px 500px at 110% -20%, rgba(38,166,154,0.06), transparent 50%), ${t.palette.background.default}`,
+        minHeight: '100vh'
+      }}>
         <Toolbar />
         <Container maxWidth="lg">
           <Fade in key={location.pathname} timeout={400}>
