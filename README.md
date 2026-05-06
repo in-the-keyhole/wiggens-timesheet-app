@@ -35,6 +35,8 @@ The dev server proxies API calls under `/codex-example/api/v1` to `http://localh
 UI notes:
 - Persistent left sidebar navigation (MUI Drawer)
 - Inline add/edit employee form (no popup dialogs)
+- Subtle custom theme (indigo/teal) with gradient AppBar
+- Smooth route fades and animated Add/Edit Employee form
 - Snackbar feedback for saving timesheets
 
 ## Development Notes
