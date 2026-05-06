@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Employees from './pages/Employees'
 import Timesheets from './pages/Timesheets'
 import Reports from './pages/Reports'
+import Status from './pages/Status'
 
 const drawerWidth = 220
 
@@ -19,7 +20,7 @@ export default function App() {
       <Drawer variant="permanent" sx={{ width: drawerWidth, [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' }}}>
         <Toolbar />
         <List>
-          {[{to:'/',label:'Home'},{to:'/employees',label:'Employees'},{to:'/timesheets',label:'Timesheets'},{to:'/reports',label:'Reports'}].map(i => (
+          {[{to:'/',label:'Home'},{to:'/employees',label:'Employees'},{to:'/timesheets',label:'Timesheets'},{to:'/reports',label:'Reports'},{to:'/status',label:'Status'}].map(i => (
             <ListItem key={i.to} disablePadding>
               <ListItemButton component={Link} to={i.to} selected={location.pathname === i.to}>
                 <ListItemText primary={i.label} />
@@ -38,6 +39,7 @@ export default function App() {
                 <Route path="/employees" element={<Employees />} />
                 <Route path="/timesheets" element={<Timesheets />} />
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/status" element={<Status />} />
               </Routes>
             </Box>
           </Fade>

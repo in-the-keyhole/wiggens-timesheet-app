@@ -37,6 +37,7 @@ cd api && mvn clean package
 - `POST /codex-example/api/v1/employees` — create employee
 - `POST /codex-example/api/v1/timesheets` — submit timesheet
 - `GET /codex-example/api/v1/reports/weekly-hours?weekStart=YYYY-MM-DD` — hours by employee
+- `GET /codex-example/api/v1/status/inactive?weekStart=YYYY-MM-DD` — employees with no hours for the week
 
 Seed data creates Jane and John Doe employees on startup.
 
@@ -53,6 +54,9 @@ cd ui && npm run dev
 ```
 Runs on http://localhost:5173 and proxies `/codex-example/api` to the backend.
 
+New pages:
+- Status: shows employees who have not input hours for the selected week.
+
 ### Tests
 ```
 cd ui && npm test
@@ -68,4 +72,3 @@ cd ui && npm run build
 - REST base path: `/codex-example/api/v1/`
 - DTOs for request/response, validation via Jakarta Bean Validation
 - Minimal integration tests provided; extend as features grow
-
