@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
-        <Card>
+        <Card sx={{ background: 'linear-gradient(135deg,#e8eaf6 0%, #ffffff 60%)' }}>
           <CardContent>
             <Typography variant="h5">Employees</Typography>
             <Typography variant="h3">{metrics?.employeeCount ?? '...'}</Typography>
@@ -19,7 +19,7 @@ export default function Home() {
         </Card>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Card>
+        <Card sx={{ background: 'linear-gradient(135deg,#fff3e0 0%, #ffffff 60%)' }}>
           <CardContent>
             <Typography variant="h5">Timesheets</Typography>
             <Typography variant="h3">{metrics?.timesheetCount ?? '...'}</Typography>
@@ -29,4 +29,3 @@ export default function Home() {
     </Grid>
   )
 }
-

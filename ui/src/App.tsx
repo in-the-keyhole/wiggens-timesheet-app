@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Toolbar, Typography, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { AppBar, Box, Container, Toolbar, Typography, Drawer, List, ListItem, ListItemButton, ListItemText, Fade } from '@mui/material'
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Employees from './pages/Employees'
@@ -31,12 +31,16 @@ export default function App() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Container>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route path="/timesheets" element={<Timesheets />} />
-            <Route path="/reports" element={<Reports />} />
-          </Routes>
+          <Fade in key={location.pathname} timeout={300}>
+            <Box>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/employees" element={<Employees />} />
+                <Route path="/timesheets" element={<Timesheets />} />
+                <Route path="/reports" element={<Reports />} />
+              </Routes>
+            </Box>
+          </Fade>
         </Container>
       </Box>
     </Box>
