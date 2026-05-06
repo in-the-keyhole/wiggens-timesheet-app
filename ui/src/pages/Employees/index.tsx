@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../codex-example/api/client'
-import { Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Paper, Typography, Divider, Collapse, Slide } from '@mui/material'
+import { Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Paper, Typography, Divider, Collapse, Slide, Snackbar, Alert, Grow } from '@mui/material'
 
 type Employee = { id: number; firstName: string; lastName: string; email: string }
 
@@ -8,8 +8,10 @@ export default function Employees() {
   const [employees, setEmployees] = useState<Employee[]>([])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState<Partial<Employee>>({ firstName: '', lastName: '', email: '' })
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success'|'info'|'warning'|'error' }>({ open: false, message: '', severity: 'success' })
+  const [listVisible, setListVisible] = useState(false)
 
-  const load = () => api.get<Employee[]>('/employees').then(r => setEmployees(r.data))
+  const load = () => api.get<Employee[]>('/employees').then(r => { setEmployees(r.data); setListVisible(true) })
   useEffect(() => { load() }, [])
 
   const beginAdd = () => { setForm({ firstName: '', lastName: '', email: '' }); setShowForm(true) }
@@ -17,18 +19,36 @@ export default function Employees() {
   const cancel = () => { setShowForm(false); setForm({ firstName: '', lastName: '', email: '' }) }
 
   const save = async () => {
-    if (form.id) await api.put(`/employees/${form.id}`, form)
-    else await api.post('/employees', form)
+    if (form.id) {
+      await api.put(`/employees/${form.id}`, form)
+      setSnack({ open: true, message: 'Employee updated', severity: 'success' })
+    } else {
+      await api.post('/employees', form)
+      setSnack({ open: true, message: 'Employee added', severity: 'success' })
+    }
     setShowForm(false); setForm({ firstName: '', lastName: '', email: '' }); load()
   }
 
-  const del = async (id: number) => { await api.delete(`/employees/${id}`); load() }
+  const del = async (id: number) => { await api.delete(`/employees/${id}`); setSnack({ open: true, message: 'Employee deleted', severity: 'info' }); load() }
 
   return (
     <Stack spacing={2}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h6">Employees</Typography>
-        <Button variant="contained" onClick={beginAdd}>Add Employee</Button>
+        <Button
+          variant="contained"
+          onClick={beginAdd}
+          sx={{
+            background: (t) => `linear-gradient(90deg, ${t.palette.primary.main}, ${t.palette.secondary.main})`,
+            boxShadow: 2,
+            '&:hover': {
+              boxShadow: 4,
+              filter: 'brightness(1.05)'
+            }
+          }}
+        >
+          Add Employee
+        </Button>
       </Stack>
 
       <Collapse in={showForm} mountOnEnter unmountOnExit timeout={200}>
@@ -61,8 +81,9 @@ export default function Employees() {
         </Slide>
       </Collapse>
 
-      <Paper variant="outlined">
-        <Table size="small">
+      <Grow in={listVisible} timeout={400}>
+        <Paper variant="outlined">
+          <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -84,8 +105,20 @@ export default function Employees() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      </Paper>
+          </Table>
+        </Paper>
+      </Grow>
+
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={2500}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={() => setSnack({ ...snack, open: false })} severity={snack.severity} sx={{ width: '100%' }}>
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Stack>
   )
 }
