@@ -17,6 +17,17 @@ wiggens-timesheet-app/
   Readme.md
 ```
 
+## Quick Start
+- Backend
+  - Run: `cd api && mvn spring-boot:run`
+  - Test: `cd api && mvn test`
+  - Build: `cd api && mvn clean package`
+- Frontend
+  - Install: `cd ui && npm install`
+  - Dev: `cd ui && npm run dev`
+  - Test: `cd ui && npm test` (uses `vitest run`)
+  - Build: `cd ui && npm run build`
+
 ## Backend
 
 ### Run
