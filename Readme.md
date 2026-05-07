@@ -23,7 +23,12 @@ wiggens-timesheet-app/
 ```
 cd api && mvn spring-boot:run
 ```
-API runs on http://localhost:8080 with base path `/codex-example/api/v1`.
+API runs on `http://localhost:8080` with base path `/codex-example/api/v1`.
+
+Configuration is externalized via environment variables:
+- `SPRING_PROFILES_ACTIVE` (default `dev`) — `dev` uses in-memory H2; `prod` uses PostgreSQL
+- `SERVER_PORT` (default `8080`) — server port
+- For `prod` profile: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`
 
 ### Build & Test
 ```
@@ -54,7 +59,13 @@ cd ui && npm install
 ```
 cd ui && npm run dev
 ```
-Runs on http://localhost:5173 and proxies `/codex-example/api` to the backend.
+Runs on `http://localhost:5173` and proxies `/codex-example/api` to the backend.
+
+Frontend configuration is externalized via Vite env vars (see `ui/.env.example`):
+- `VITE_DEV_PORT` (default `5173`) — Vite dev server port
+- `VITE_API_PREFIX` (default `/codex-example/api`) — proxy context path for API
+- `VITE_API_PROXY_TARGET` (default `http://localhost:8080`) — backend base URL for dev proxy
+- `VITE_API_BASE_URL` (default `/codex-example/api/v1`) — Axios client base URL
 
 New pages:
 - Status: shows employees who have not input hours for the selected week.
